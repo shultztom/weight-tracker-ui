@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const LOGIN_URL = 'https://auth-api-go.shultzlab.com/login';
-//const LOGIN_URL = 'http://localhost:8080/login';
+const LOGIN_URL = process.env.REACT_APP_AUTH_URL + '/login';
 
 export function attemptLogin (username, password) {
     const axiosConfig = {
