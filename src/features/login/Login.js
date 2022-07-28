@@ -61,6 +61,7 @@ export function Login () {
           <TextField
             id="outlined-required"
             label="Password"
+            type={'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onKeyPress={(e) => {
