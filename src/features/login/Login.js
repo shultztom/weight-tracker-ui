@@ -80,8 +80,8 @@ export function Login () {
             Log In
           </Button>
 
-          <Snackbar open={status === 'rejected'} onClose={() => dispatch(setStatusIdle)}>
-            <Alert onClose={() => dispatch(setStatusIdle)} severity="error" sx={{ width: '100%' }}>
+          <Snackbar open={status === 'rejected'} onClose={() => dispatch(setStatusIdle())}>
+            <Alert onClose={() => dispatch(setStatusIdle())} severity="error" sx={{ width: '100%' }}>
               Error Logging In!
             </Alert>
           </Snackbar>
