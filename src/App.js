@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUser, selectToken } from "./features/login/loginSlice";
+import { selectUser, selectToken } from "./features/Login/loginSlice";
 import { verifyToken } from "./utils/auth";
+import WeightChart from "./features/WeightChart";
+import {Box, Grid} from "@mui/material";
 
 
 function App () {
@@ -12,32 +14,38 @@ function App () {
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
 
-  useEffect(() => {
+  const init = async () => {
     // Check if token is set
     if (!user && !token) {
-      return navigate("/login");
+      navigate("/login");
     }
 
     // Verify Token
-    const verify = async () => {
-      // TODO why is this being called twice??
-      try {
-        const isValid = await verifyToken(token);
-        if(isValid.status !== 200){
-          return navigate("/login");
-        }
-      } catch (e) {
-        console.log(e.message);
+    try {
+      const isValid = await verifyToken(token);
+      if(isValid.status !== 200){
         return navigate("/login");
       }
+    } catch (e) {
+      console.log(e.message);
+      return navigate("/login");
     }
-    verify();
+  }
+
+  useEffect(() => {
+    init();
   }, []);
 
   return (
-    <div>
-      <Link to="/login">Login</Link>
-    </div>
+    <Box>
+      <Grid container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+      >
+        <WeightChart />
+      </Grid>
+    </Box>
   );
 }
 
