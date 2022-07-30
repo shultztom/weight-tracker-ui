@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from "axios";
 import {Grid, Tabs, Tab} from "@mui/material";
+import {convertMetricToImperialArr} from "../../utils/convert";
 
 function WeightChart () {
     const user = useSelector(selectUser);
@@ -23,7 +24,8 @@ function WeightChart () {
 
         try {
             const results = await axios(axiosConfig);
-            setWeightData(get(results, 'data', []));
+            const data = get(results, 'data', []);
+            setWeightData(convertMetricToImperialArr(data));
         } catch (e) {
             console.log(e.message);
         }
@@ -101,7 +103,7 @@ function CustomTooltip({ active, payload, label }) {
         return (
             <div className="tooltip">
                 <h4>{get(payload, '[0].payload.entryDate', '')}</h4>
-                <p>{get(payload, '[0].payload.weight', '')} lbs</p>
+                <p>{Number(get(payload, '[0].payload.weight', 0)).toFixed(1)} lbs</p>
             </div>
         );
     }
