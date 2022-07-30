@@ -103,7 +103,7 @@ function CustomTooltip({ active, payload, label }) {
         return (
             <div className="tooltip">
                 <h4>{get(payload, '[0].payload.entryDate', '')}</h4>
-                <p>{Number(get(payload, '[0].payload.weight', 0)).toFixed(1)} lbs</p>
+                <p>{Number(get(payload, '[0].payload.weight', '')).toFixed(1)} lbs</p>
             </div>
         );
     }

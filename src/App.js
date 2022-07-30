@@ -6,6 +6,7 @@ import { selectUser, selectToken } from "./features/Login/loginSlice";
 import { verifyToken } from "./utils/auth";
 import WeightChart from "./features/WeightChart";
 import {Box, Grid} from "@mui/material";
+import WeightStats from "./features/WeightStats";
 
 
 function App () {
@@ -44,6 +45,7 @@ function App () {
             alignItems="center"
       >
         <WeightChart />
+        <WeightStats />
       </Grid>
     </Box>
   );

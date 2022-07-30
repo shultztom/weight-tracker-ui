@@ -22,3 +22,15 @@ export function convertMetricToImperialArr (array) {
     }
     return array;
 }
+
+export function convertMetricToImperial(item) {
+    // Height (cm -> feet, inches)
+    const height = cmToFeetInches(item.user?.height);
+    set(item, 'user.height', height);
+
+    // Weight (kg -> lbs)
+    const lbs = kgToLbs(item.weight);
+    set(item, 'weight', lbs);
+
+    return item;
+}
