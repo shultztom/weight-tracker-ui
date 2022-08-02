@@ -9,6 +9,7 @@ import {Box, Grid} from "@mui/material";
 import { selectUser, selectToken } from "./features/Login/loginSlice";
 import WeightChart from "./features/WeightChart";
 import WeightStats from "./features/WeightStats";
+import AddWeight from './features/AddWeight';
 
 import { verifyToken } from "./utils/auth";
 import {convertMetricToImperial, convertMetricToImperialArr} from "./utils/convert";
@@ -118,6 +119,12 @@ function App () {
                      handleTabsChange={handleTabsChange}
                      selectedTab={selectedTab} />
         <WeightStats weightData={weightData} stats={stats}  />
+        <AddWeight token={token}
+                   user={user}
+                   fetchStatsData={fetchStatsData}
+                   fetchChartData={fetchChartData}
+                   selectedTab={selectedTab}
+        />
       </Grid>
     </Box>
   );

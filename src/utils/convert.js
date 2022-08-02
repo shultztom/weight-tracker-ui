@@ -10,6 +10,10 @@ const kgToLbs = (weight) => {
     return weight * 2.20462;
 }
 
+export function convertLbsToKs (weight) {
+    return weight / 2.20462;
+}
+
 export function convertMetricToImperialArr (array) {
     for(let item of array) {
         // Height (cm -> feet, inches)
