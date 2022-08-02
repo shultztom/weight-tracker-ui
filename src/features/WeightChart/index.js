@@ -1,45 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import { useSelector } from "react-redux";
-import {selectToken, selectUser} from "../Login/loginSlice";
+import React from 'react';
 import { get } from 'lodash';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import axios from "axios";
 import {Grid, Tabs, Tab} from "@mui/material";
-import {convertMetricToImperialArr} from "../../utils/convert";
 
-function WeightChart () {
-    const user = useSelector(selectUser);
-    const token = useSelector(selectToken);
-    const [weightData, setWeightData] = useState([]);
-    const [selectedTab, setSelectedTab] = useState('7');
-
-    const fetchData = async (time) => {
-        const axiosConfig = {
-            method: 'GET',
-            url: `${process.env.REACT_APP_WEIGHT_TRACKER_API}/entry/username/${user}?time=${time}`,
-            headers: {
-                'x-auth-token': token
-            }
-        }
-
-        try {
-            const results = await axios(axiosConfig);
-            const data = get(results, 'data', []);
-            setWeightData(convertMetricToImperialArr(data));
-        } catch (e) {
-            console.log(e.message);
-        }
-    }
-
-    const handleTabsChange = (e, value) => {
-        setSelectedTab(value);
-        fetchData(value);
-    }
-
-    useEffect(() => {
-        fetchData('7')
-    }, []);
-
+function WeightChart ({weightData, handleTabsChange, selectedTab}) {
     return (
         <Grid container>
             <ResponsiveContainer width="100%" height={400}>

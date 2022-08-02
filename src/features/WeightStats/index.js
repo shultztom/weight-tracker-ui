@@ -1,56 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import { useSelector } from "react-redux";
-import {selectToken, selectUser} from "../Login/loginSlice";
+import React from 'react';
 import { get } from 'lodash';
-import axios from "axios";
-import {Grid, Typography, Item} from "@mui/material";
-import {convertMetricToImperial} from "../../utils/convert";
+import {Grid, Typography} from "@mui/material";
 
-function WeightChart () {
-    const user = useSelector(selectUser);
-    const token = useSelector(selectToken);
-    const [weightData, setWeightData] = useState([]);
-    const [stats, setStats] = useState(null);
+import {round} from "../../utils/convert";
 
-    const round = (value, precision) => {
-        let multiplier = Math.pow(10, precision || 0);
-        return Math.round(value * multiplier) / multiplier;
-
-    }
-
-    const fetchData = async (time) => {
-        const axiosConfigLastEntry = {
-            method: 'GET',
-            url: `${process.env.REACT_APP_WEIGHT_TRACKER_API}/entry/username/${user}/last`,
-            headers: {
-                'x-auth-token': token
-            }
-        }
-
-        const axiosConfigStats = {
-            method: 'GET',
-            url: `${process.env.REACT_APP_WEIGHT_TRACKER_API}/stats/all/${user}`,
-            headers: {
-                'x-auth-token': token
-            }
-        }
-
-        try {
-            const lastResults = await axios(axiosConfigLastEntry);
-            const lastData = get(lastResults, 'data', []);
-            setWeightData(convertMetricToImperial(lastData));
-            const statsResults = await axios(axiosConfigStats);
-            const statsData = get(statsResults, 'data', null);
-            setStats(statsData);
-        } catch (e) {
-            console.log(e.message);
-        }
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, []);
-
+function WeightStats ({weightData, stats}) {
     return (
         <Grid container
               spacing={0}
@@ -78,4 +32,4 @@ function WeightChart () {
     );
 }
 
-export default WeightChart;
+export default WeightStats;

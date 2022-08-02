@@ -1,12 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUser, selectToken } from "./features/Login/loginSlice";
-import { verifyToken } from "./utils/auth";
-import WeightChart from "./features/WeightChart";
+import axios from "axios";
+import {get} from "lodash";
 import {Box, Grid} from "@mui/material";
+
+import { selectUser, selectToken } from "./features/Login/loginSlice";
+import WeightChart from "./features/WeightChart";
 import WeightStats from "./features/WeightStats";
+
+import { verifyToken } from "./utils/auth";
+import {convertMetricToImperial, convertMetricToImperialArr} from "./utils/convert";
 
 
 function App () {
@@ -14,6 +19,58 @@ function App () {
 
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
+
+  const [weightChartData, setWeightChartData] = useState([]);
+  const [weightData, setWeightData] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [selectedTab, setSelectedTab] = useState('7');
+
+  const fetchStatsData = async () => {
+    const axiosConfigLastEntry = {
+      method: 'GET',
+      url: `${process.env.REACT_APP_WEIGHT_TRACKER_API}/entry/username/${user}/last`,
+      headers: {
+        'x-auth-token': token
+      }
+    }
+
+    const axiosConfigStats = {
+      method: 'GET',
+      url: `${process.env.REACT_APP_WEIGHT_TRACKER_API}/stats/all/${user}`,
+      headers: {
+        'x-auth-token': token
+      }
+    }
+
+    try {
+      const lastResults = await axios(axiosConfigLastEntry);
+      const lastData = get(lastResults, 'data', []);
+      setWeightData(convertMetricToImperial(lastData));
+      const statsResults = await axios(axiosConfigStats);
+      const statsData = get(statsResults, 'data', null);
+      setStats(statsData);
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  const fetchChartData = async (time) => {
+    const axiosConfig = {
+      method: 'GET',
+      url: `${process.env.REACT_APP_WEIGHT_TRACKER_API}/entry/username/${user}?time=${time}`,
+      headers: {
+        'x-auth-token': token
+      }
+    }
+
+    try {
+      const results = await axios(axiosConfig);
+      const data = get(results, 'data', []);
+      setWeightChartData(convertMetricToImperialArr(data));
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
 
   const init = async () => {
     // Check if token is set
@@ -31,11 +88,24 @@ function App () {
       console.log(e.message);
       return navigate("/login");
     }
+
+    // Fetch Data
+    try {
+      await fetchStatsData();
+      await fetchChartData('7');
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 
   useEffect(() => {
     init();
   }, []);
+
+  const handleTabsChange = (e, value) => {
+    setSelectedTab(value);
+    fetchChartData(value);
+  }
 
   return (
     <Box>
@@ -44,8 +114,10 @@ function App () {
             direction="column"
             alignItems="center"
       >
-        <WeightChart />
-        <WeightStats />
+        <WeightChart weightData={weightChartData}
+                     handleTabsChange={handleTabsChange}
+                     selectedTab={selectedTab} />
+        <WeightStats weightData={weightData} stats={stats}  />
       </Grid>
     </Box>
   );
