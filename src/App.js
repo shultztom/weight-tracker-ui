@@ -25,6 +25,7 @@ function App () {
   const [weightData, setWeightData] = useState([]);
   const [stats, setStats] = useState(null);
   const [selectedTab, setSelectedTab] = useState('7');
+  const [loadingChartData, setLoadingChartData] = useState(true);
 
   const fetchStatsData = async () => {
     const axiosConfigLastEntry = {
@@ -68,6 +69,7 @@ function App () {
       const results = await axios(axiosConfig);
       const data = get(results, 'data', []);
       setWeightChartData(convertMetricToImperialArr(data));
+      setLoadingChartData(false);
     } catch (e) {
       console.log(e.message);
     }
@@ -117,7 +119,9 @@ function App () {
       >
         <WeightChart weightData={weightChartData}
                      handleTabsChange={handleTabsChange}
-                     selectedTab={selectedTab} />
+                     selectedTab={selectedTab}
+                     loadingChartData={loadingChartData}
+        />
         <WeightStats weightData={weightData} stats={stats}  />
         <AddWeight token={token}
                    user={user}
