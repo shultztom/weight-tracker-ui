@@ -1,4 +1,4 @@
-import {set} from 'lodash';
+import { set } from 'lodash';
 
 const cmToFeetInches = (height) => {
     const inches = height / 2.54;
@@ -10,12 +10,12 @@ const kgToLbs = (weight) => {
     return weight * 2.20462;
 }
 
-export function convertLbsToKs (weight) {
+export function convertLbsToKs(weight) {
     return weight / 2.20462;
 }
 
-export function convertMetricToImperialArr (array) {
-    for(let item of array) {
+export function convertMetricToImperialArr(array) {
+    for (let item of array) {
         // Height (cm -> feet, inches)
         const height = cmToFeetInches(item.user?.height);
         set(item, 'user.height', height);
@@ -39,7 +39,7 @@ export function convertMetricToImperial(item) {
     return item;
 }
 
-export function round  (value, precision) {
+export function round(value, precision) {
     let multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
 }

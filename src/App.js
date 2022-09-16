@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import {get} from "lodash";
-import {Box, Grid} from "@mui/material";
+import { get } from "lodash";
+import { Box, Grid } from "@mui/material";
 
 import { selectUser, selectToken } from "./features/Login/loginSlice";
 import WeightChart from "./features/WeightChart";
@@ -12,10 +12,10 @@ import WeightStats from "./features/WeightStats";
 import AddWeight from './features/AddWeight';
 
 import { verifyToken } from "./utils/auth";
-import {convertMetricToImperial, convertMetricToImperialArr} from "./utils/convert";
+import { convertMetricToImperial, convertMetricToImperialArr } from "./utils/convert";
 
 
-function App () {
+function App() {
   let navigate = useNavigate();
 
   const user = useSelector(selectUser);
@@ -84,7 +84,7 @@ function App () {
     // Verify Token
     try {
       const isValid = await verifyToken(token);
-      if(isValid.status !== 200){
+      if (isValid.status !== 200) {
         return navigate("/login");
       }
     } catch (e) {
@@ -113,21 +113,21 @@ function App () {
   return (
     <Box>
       <Grid container
-            spacing={0}
-            direction="column"
-            alignItems="center"
+        spacing={0}
+        direction="column"
+        alignItems="center"
       >
         <WeightChart weightData={weightChartData}
-                     handleTabsChange={handleTabsChange}
-                     selectedTab={selectedTab}
-                     loadingChartData={loadingChartData}
+          handleTabsChange={handleTabsChange}
+          selectedTab={selectedTab}
+          loadingChartData={loadingChartData}
         />
-        <WeightStats weightData={weightData} stats={stats}  />
+        <WeightStats weightData={weightData} stats={stats} />
         <AddWeight token={token}
-                   user={user}
-                   fetchStatsData={fetchStatsData}
-                   fetchChartData={fetchChartData}
-                   selectedTab={selectedTab}
+          user={user}
+          fetchStatsData={fetchStatsData}
+          fetchChartData={fetchChartData}
+          selectedTab={selectedTab}
         />
       </Grid>
     </Box>
