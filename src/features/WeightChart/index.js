@@ -1,17 +1,28 @@
 import React from 'react';
 import { get } from 'lodash';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import {Grid, Tabs, Tab, CircularProgress} from "@mui/material";
+import { Grid, Tabs, Tab, CircularProgress } from "@mui/material";
 
-function WeightChart ({weightData, handleTabsChange, selectedTab, loadingChartData}) {
+function WeightChart({ weightData, handleTabsChange, selectedTab, loadingChartData }) {
+    const calculateYAxis = (x, bound) => {
+        let roughValue;
+        if (bound === 'upper') {
+            roughValue = x + 5;
+        } else {
+            roughValue = x - 5;
+        }
+
+        return Math.round(roughValue / 5) * 5;
+    }
+
     return (
         <Grid container>
             {loadingChartData && (
                 <Grid container
-                      mt={2}
-                      spacing={0}
-                      direction="column"
-                      alignItems="center">
+                    mt={2}
+                    spacing={0}
+                    direction="column"
+                    alignItems="center">
                     <CircularProgress />
                 </Grid>
             )}
@@ -44,19 +55,21 @@ function WeightChart ({weightData, handleTabsChange, selectedTab, loadingChartDa
                                 datakey="weight"
                                 axisLine={false}
                                 tickLine={false}
-                                tickCount={8}
                                 tickFormatter={(number) => `${number} lbs`}
+                                type="number"
+                                domain={[dataMin => (calculateYAxis(dataMin, 'lower')), dataMax => (calculateYAxis(dataMax, 'upper'))]}
+                                tickCount={5}
                             />
 
                             <Tooltip content={<CustomTooltip />} />
 
                             <CartesianGrid opacity={0.1} vertical={false} />
-                        </AreaChart>
-                    </ResponsiveContainer>
+                        </AreaChart >
+                    </ResponsiveContainer >
                     <Grid container
-                          spacing={0}
-                          direction="column"
-                          alignItems="center"
+                        spacing={0}
+                        direction="column"
+                        alignItems="center"
                     >
                         <Tabs
                             value={selectedTab}
@@ -69,9 +82,10 @@ function WeightChart ({weightData, handleTabsChange, selectedTab, loadingChartDa
                             <Tab value="-1" label="All" />
                         </Tabs>
                     </Grid>
-                </React.Fragment>
-                )}
-        </Grid>
+                </React.Fragment >
+            )
+            }
+        </Grid >
     );
 }
 
