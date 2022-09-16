@@ -4,6 +4,17 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import {Grid, Tabs, Tab} from "@mui/material";
 
 function WeightChart ({weightData, handleTabsChange, selectedTab}) {
+    const calculateYAxis = (x, bound) => {
+        let roughValue;
+        if(bound === 'upper'){
+            roughValue = x + 5;
+        }else {
+            roughValue = x - 5;
+        }
+
+        return Math.round(roughValue/5)*5;
+    }
+
     return (
         <Grid container>
             <ResponsiveContainer width="100%" height={400}>
@@ -33,8 +44,10 @@ function WeightChart ({weightData, handleTabsChange, selectedTab}) {
                         datakey="weight"
                         axisLine={false}
                         tickLine={false}
-                        tickCount={8}
                         tickFormatter={(number) => `${number} lbs`}
+                        type="number"
+                        domain={[dataMin => (calculateYAxis(dataMin, 'lower')), dataMax => (calculateYAxis(dataMax, 'upper'))]}
+                        tickCount={5}
                     />
 
                     <Tooltip content={<CustomTooltip />} />
