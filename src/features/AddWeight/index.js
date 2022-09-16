@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {Button,
+import React, { useState } from 'react';
+import {
+    Button,
     Grid,
     Dialog,
     DialogTitle,
@@ -7,11 +8,11 @@ import {Button,
     TextField,
     DialogContent
 } from "@mui/material";
-import {DatePicker} from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 import axios from "axios";
-import {convertLbsToKs} from "../../utils/convert";
+import { convertLbsToKs } from "../../utils/convert";
 
-function AddWeight ({user, token, fetchStatsData, fetchChartData, selectedTab}) {
+function AddWeight({ user, token, fetchStatsData, fetchChartData, selectedTab }) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [weight, setWeight] = useState(null);
     const [entryDate, setEntryDate] = useState(new Date());
@@ -24,7 +25,7 @@ function AddWeight ({user, token, fetchStatsData, fetchChartData, selectedTab}) 
 
     const handleSubmit = async () => {
         // TODO error handle
-        if(!weight || !entryDate){
+        if (!weight || !entryDate) {
             console.log("Missing info");
             return;
         }
@@ -38,7 +39,7 @@ function AddWeight ({user, token, fetchStatsData, fetchChartData, selectedTab}) 
             headers: {
                 'x-auth-token': token
             },
-            data:{
+            data: {
                 username: user,
                 weight: entryWeight,
                 entryDate
@@ -61,10 +62,10 @@ function AddWeight ({user, token, fetchStatsData, fetchChartData, selectedTab}) 
 
     return (
         <Grid container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              mt={4}>
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            mt={4}>
             <Grid item xs={12}>
                 <Button onClick={() => setIsDialogOpen(true)}>Add Weight</Button>
             </Grid>
