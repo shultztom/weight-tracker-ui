@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login } from './features/Login/Login';
+import { Register } from "./features/Register";
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 // date-fns
@@ -22,6 +23,7 @@ root.render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register/>} />
         </Routes>
       </LocalizationProvider>
     </BrowserRouter>

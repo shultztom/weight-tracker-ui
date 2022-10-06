@@ -73,12 +73,23 @@ export function Login() {
           />
         </Grid>
         <Grid item xs={12} mt={1}>
-          <Button
-            disabled={status === 'loading'}
-            onClick={() => dispatch(login({ username, password }))}
-          >
-            Log In
-          </Button>
+          <Grid item xs={12} textAlign='center'>
+            <Button
+                disabled={status === 'loading'}
+                onClick={() => dispatch(login({ username, password }))}
+            >
+              Log In
+            </Button>
+          </Grid>
+
+
+          <Grid item xs={12} textAlign='center'>
+            <Button
+                onClick={() => navigate("/register")}
+            >
+              Register
+            </Button>
+          </Grid>
 
           <Snackbar open={status === 'rejected'} onClose={() => dispatch(setStatusIdle())}>
             <Alert onClose={() => dispatch(setStatusIdle())} severity="error" sx={{ width: '100%' }}>
